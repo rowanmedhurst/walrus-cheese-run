@@ -16,6 +16,7 @@
 //---------------------------------------------------------------------------//
 game_vars_t GAME_VARS;
 extern KC_keys_t KEYS;
+static const gfx_image_t *truck_img[] = { truckl, truck, truckr };
 //---------------------------------------------------------------------------//
 void populate_map(void)
 {
@@ -38,10 +39,11 @@ void populate_map(void)
 
     for (i = 0; i < NUM_WALRII; i++)
     {
-        GAME_VARS.walrii_x[i] = (rand() % 632) + 28;
-        GAME_VARS.walrii_y[i] = (rand() % 664) + 28;
-        GAME_VARS.walrii_dir[i] = rand() % 1;
-        GAME_VARS.walrii_blud[i] = false;
+        walrii_t *walrii = &GAME_VARS.walrii[i];
+        walrii->x = (rand() % 632) + 28;
+        walrii->y = (rand() % 664) + 28;
+        walrii->dir = rand() & 1;
+        walrii->blud = false;
     }
 }
 //---------------------------------------------------------------------------//
@@ -49,6 +51,7 @@ void game_loop(void)
 {
     int mapx = 168, mapy = 496;
     int truckx = 328, trucky = 717;
+    int truckx_tmp, trucky_tmp;
     int8_t truckdir = 0;
     uint8_t truckspeed = 0;
     int dx, dy, i;
@@ -71,8 +74,9 @@ void game_loop(void)
             trucky -= dy;
         }
         else {
-            dx = 205 * truckspeed / 128;
-            dy = 205 * truckspeed / 256;
+            int tmp_speed = 205 * truckspeed;
+            dx = tmp_speed / 128;
+            dy = tmp_speed / 256;
             if (truckdir == -1) truckx -= dx;
             else truckx += dx;
             trucky -= dy;
@@ -82,12 +86,13 @@ void game_loop(void)
 
         for (i = 0; i < NUM_WALRII; i++)
         {
-            if (!GAME_VARS.walrii_blud[i])
+            walrii_t *walrii = &GAME_VARS.walrii[i];
+            if (!walrii->blud)
             {
-                dx = abs(truckx - GAME_VARS.walrii_x[i]);
-                dy = abs(trucky - GAME_VARS.walrii_y[i]);
+                dx = abs(truckx - walrii->x);
+                dy = abs(trucky - walrii->y);
                 if (dx < 20 && dy < 20)
-                    GAME_VARS.walrii_blud[i] = true;
+                    walrii->blud = true;
             }
         }
 
@@ -103,10 +108,12 @@ void game_loop(void)
 
         // update camera position to keep truck in the screen
 
-        if (trucky-19-mapy < 180) mapy -= 180 - (trucky-19-mapy);
+        trucky_tmp = trucky-19-mapy;
+        if (trucky_tmp < 180) mapy -= 180 - trucky_tmp;
         
-        if (truckx-13-mapx < 100) mapx -= 100 - (truckx-13-mapx);
-        else if (truckx-13-mapx > 170) mapx += (truckx-13-mapx) - 170;
+        truckx_tmp = truckx-13-mapx;
+        if (truckx_tmp < 100) mapx -= 100 - truckx_tmp;
+        else if (truckx_tmp > 170) mapx += truckx_tmp - 170;
         
         // restrict camera position to hard limits
 
@@ -114,7 +121,6 @@ void game_loop(void)
         else if (mapx > 336) mapx = 336;
 
         if (mapy < 7) mapy = 7;
-
 
         // accelerate if not at top speed
         if (truckspeed < 4) {
@@ -131,25 +137,24 @@ void game_loop(void)
 
         for (i = 0; i < NUM_WALRII; i++)
         {
-            if (GAME_VARS.walrii_blud[i])
+            walrii_t *walrii = &GAME_VARS.walrii[i];
+            int walrii_x_tmp = walrii->x-mapx;
+            int walrii_y_tmp = walrii->y-mapy;
+            
+            if (walrii->blud)
             {
-                gfx_TransparentSprite(blood, GAME_VARS.walrii_x[i]-mapx, GAME_VARS.walrii_y[i]-mapy);
+                gfx_TransparentSprite(blood, walrii_x_tmp, walrii_y_tmp);
             }
             else
             {
-                if (GAME_VARS.walrii_dir[i] == 0)
-                    gfx_TransparentSprite(walrusl, GAME_VARS.walrii_x[i]-mapx, GAME_VARS.walrii_y[i]-mapy);
+                if (walrii->dir == 0)
+                    gfx_TransparentSprite(walrusl, walrii_x_tmp, walrii_y_tmp);
                 else
-                    gfx_TransparentSprite(walrusr, GAME_VARS.walrii_x[i]-mapx, GAME_VARS.walrii_y[i]-mapy);
+                    gfx_TransparentSprite(walrusr, walrii_x_tmp, walrii_y_tmp);
             }
         }
 
-        switch (truckdir)
-        {
-            case -1: gfx_TransparentSprite(truckl, truckx-13-mapx, trucky-19-mapy); break;
-            case  0: gfx_TransparentSprite(truck, truckx-13-mapx, trucky-19-mapy); break;
-            case  1: gfx_TransparentSprite(truckr, truckx-13-mapx, trucky-19-mapy); break;
-        }
+        gfx_TransparentSprite(truck_img[truckdir+1], truckx-13-mapx, trucky-19-mapy);
         submit_end_of_frame();
         print_fps();
         present();
@@ -163,7 +168,7 @@ void game_loop(void)
         }
         if (handle(&KEYS.clear)) {
             clear_keys();
-            return;
+            break;
         }
     }
     while(1);

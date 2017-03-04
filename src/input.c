@@ -66,27 +66,27 @@ void interrupt isr_keyboard(void)
 {
     kb_key_t key;
 
-    key = kb_DataArray[kb_group_1];
+    key = kb_Data[kb_group_1];
     set_keydata(&KEYS._2nd, key & kb_2nd);
 
-    key = kb_DataArray[kb_group_4];
+    key = kb_Data[kb_group_4];
     set_keydata(&KEYS._8, key & kb_8);
 
-    key = kb_DataArray[kb_group_5];
+    key = kb_Data[kb_group_5];
     set_keydata(&KEYS._9, key & kb_9);
 
-    key = kb_DataArray[kb_group_6];
+    key = kb_Data[kb_group_6];
     set_keydata(&KEYS.enter, key & kb_Enter);
     set_keydata(&KEYS.clear, key & kb_Clear);
 
-    key = kb_DataArray[kb_group_7];
+    key = kb_Data[kb_group_7];
     set_keydata(&KEYS.up, key & kb_Up);
     set_keydata(&KEYS.down, key & kb_Down);
 
-	// Must acknowledge that the interrupt occured to clear the flag
-	int_Acknowledge = INT_KEYBOARD;
-	// Acknowledge in the keypad controller (Not technically required because interrupt controller handles signal)
-	kb_IntAcknowledge = KB_DATA_CHANGED;
+    // Must acknowledge that the interrupt occured to clear the flag
+    int_Acknowledge = INT_KEYBOARD;
+    // Acknowledge in the keypad controller (Not technically required because interrupt controller handles signal)
+    kb_IntAcknowledge = KB_DATA_CHANGED;
 }
 //---------------------------------------------------------------------------//
 void initialise_interrupts(void)
