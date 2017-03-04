@@ -18,7 +18,7 @@ static const gfx_image_t *tile_img[] = {
     grass0, grass1, grass2, grass3, sand0, sand1, concrete
 };
 //---------------------------------------------------------------------------//
-void fast_isotile_blit_noclip(gfx_image_t* data, unsigned x, uint8_t y)
+/*void fast_isotile_blit_noclip(gfx_image_t* data, unsigned x, uint8_t y)
 {
     uint8_t *dst = &gfx_vbuffer[y][x];
     uint8_t *src = &data->data;
@@ -55,7 +55,7 @@ void fast_isotile_blit_noclip(gfx_image_t* data, unsigned x, uint8_t y)
     memcpy(dst, src, 8);
     dst += 322; src += 34;
     memcpy(dst, src, 4);
-}
+}*/
 //---------------------------------------------------------------------------//
 void draw_isomap(int x, int y)
 {

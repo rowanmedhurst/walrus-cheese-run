@@ -3,7 +3,7 @@
 #define iso_H
 //---------------------------------------------------------------------------//
 void draw_isomap(int x, int y);
-
+void fast_isotile_blit_noclip(gfx_image_t* data, unsigned x, uint8_t y);
 
 
 //---------------------------------------------------------------------------//
