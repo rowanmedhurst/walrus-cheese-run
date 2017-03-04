@@ -1,0 +1,28 @@
+Opened convpng.ini
+
+--- Group isogfx (C) ---
+Building palette with [256] available indices ...
+Built palette with [256] indices.
+Palette quality : 99.41%
+Saved palette (isogfx_pal.png)
+16:
+ grass0 : 100.00% (grass0.c)
+ grass1 : 100.00% (grass1.c)
+ grass2 : 100.00% (grass2.c)
+ grass3 : 100.00% (grass3.c)
+ sand0 : 93.19% (sand0.c)
+ sand1 : 93.83% (sand1.c)
+ concrete : 98.58% (concrete.c)
+ walrusl : 99.56% (walrusl.c)
+ walrusr : 99.56% (walrusr.c)
+ statue : 99.15% (statue.c)
+ mechl : 99.76% (mechl.c)
+ mechr : 99.72% (mechr.c)
+ truck : 99.97% (truck.c)
+ truckl : 99.93% (truckl.c)
+ truckr : 99.75% (truckr.c)
+ blood : 99.86% (blood.c)
+
+Converted in 1 s
+
+Finished!
