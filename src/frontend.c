@@ -90,24 +90,22 @@ void credits(void)
     gfx_SetTextXY(45, 110);
     gfx_PrintString("CREDITS");
 
-    gfx_SetTextXY(150, 35);
+    gfx_SetTextXY(150, 45);
     gfx_PrintString("DESIGN+CODE");
-    gfx_SetTextXY(150, 55);
+    gfx_SetTextXY(150, 65);
     gfx_PrintString("kotu");
+    gfx_SetTextXY(150, 85);
+    gfx_PrintString("mateoconlechuga");
 
-    gfx_SetTextXY(150, 90);
+    gfx_SetTextXY(150, 135);
     gfx_PrintString("GRAPHICS");
-    gfx_SetTextXY(150, 110);
+    gfx_SetTextXY(150, 155);
     gfx_PrintString("kotu");
-    gfx_SetTextXY(150, 130);
+    gfx_SetTextXY(150, 175);
     gfx_PrintString("dj omnimaga");
-    gfx_SetTextXY(150, 150);
+    gfx_SetTextXY(150, 195);
     gfx_PrintString("p2");
 
-    gfx_SetTextXY(150, 185);
-    gfx_PrintString("SPECIAL THANKS");
-    gfx_SetTextXY(150, 205);
-    gfx_PrintString("mateoconlechuga");
     present();
 
     while (1) {
